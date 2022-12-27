@@ -2,19 +2,37 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/page/MyHomePage.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'dimonApp/route_generator.dart';
-class MyHttpOverrides extends HttpOverrides{
+
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context){
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
-void main() {
+
+Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
-  runApp(const MyApp());
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://e1cd9ec862ca42e7b60fdc8acd39582a@o4503902736089089.ingest.sentry.io/4503902737596416';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(MyApp()),
+  );
 }
+
+// void main() {
+//   HttpOverrides.global = MyHttpOverrides();
+//   runApp(const MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

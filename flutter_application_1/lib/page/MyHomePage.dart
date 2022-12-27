@@ -127,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
           /// Profile
           SalomonBottomBarItem(
             icon: const Icon(Icons.person),
-            title: const Text("پروفایل"),
+            title: const Text("..."),
             selectedColor: Colors.teal,
           ),
         ],

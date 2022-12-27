@@ -52,6 +52,7 @@ dev_dependencies:
   qr_flutter: ^4.0.0
   percent_indicator: ^4.0.1
   http: ^0.13.5
+  sentry_flutter: ^6.18.1
 
 
 # For information on the generic Dart part of this file, see the
