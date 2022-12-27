@@ -9,7 +9,6 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../dimonApp/Style.dart';
 
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -19,52 +18,49 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
-  bool checkinternet=false;
-  int Valuecash=0;
-  int dahadTap=0;
+  bool checkinternet = false;
+  int Valuecash = 0;
+  int dahadTap = 0;
   late List<_ChartData> data;
   late TooltipBehavior _tooltip;
 
+  Future Checkinternet() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        return checkinternet = true;
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      return checkinternet = false;
+    }
+  }
 
-   Future Checkinternet()async{
-     try {
-       final result = await InternetAddress.lookup('google.com');
-       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-         print('connected');
-         return checkinternet=true;
-
-       }
-     } on SocketException catch (_) {
-       print('not connected');
-       return checkinternet=false;
-
-     }
-   }
   @override
   void initState() {
     data = [
-      _ChartData(20,20000),
-      _ChartData(21,23000),
-      _ChartData(22,22000),
-      _ChartData(23,23000),
-      _ChartData(24,24000),
-      _ChartData(25,23000),
-      _ChartData(26,26000),
+      _ChartData(20, 20000),
+      _ChartData(21, 23000),
+      _ChartData(22, 22000),
+      _ChartData(23, 23000),
+      _ChartData(24, 24000),
+      _ChartData(25, 23000),
+      _ChartData(26, 26000),
     ];
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(248, 247, 252, 30),
-
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-
               Header(context),
               const SizedBox(
                 height: 10,
@@ -131,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
           /// Profile
           SalomonBottomBarItem(
             icon: const Icon(Icons.person),
-            title: const Text("..."),
+            title: const Text("پروفایل"),
             selectedColor: Colors.teal,
           ),
         ],
@@ -189,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           offset: const Offset(0, 0.1))
                     ],
                     shape: BoxShape.circle,
-                    image:  DecorationImage(
+                    image: DecorationImage(
                         fit: BoxFit.cover,
                         image: NetworkImage(
                           "https://www.kindpng.com/picc/m/495-4952535_create-digital-profile-icon-blue-user-profile-icon.png",
@@ -215,143 +211,149 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget Chart(context) {
     return Column(
       children: [
-       Row(
-         mainAxisAlignment: MainAxisAlignment.center,
-         children: [
-           InkWell(
-             onTap: (){
-               setState(() {
-                 dahadTap=0;
-               });
-             },
-             child: Text("داهات",style: dahadTap==0 ? BtmChartStyle:BtmChartNoStyle,),
-           ),
-           SizedBox(width: 10,),
-           InkWell(
-             onTap: (){
-               setState(() {
-                 dahadTap=1;
-               });
-             },
-             child: Text("خەرجی ",style: dahadTap==1 ? BtmChartStyle:BtmChartNoStyle,),
-           ),
-         ],
-       ),
-
-        dahadTap==0 ? Container(
-          height: 200,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 0, right: 0, top: 0),
-             child: Stack(
-               children: [
-                 SfCartesianChart(
-                   margin: EdgeInsets.all(0),
-                   borderWidth: 0,
-                   borderColor: Colors.transparent,
-                   plotAreaBorderWidth: 0,
-                   primaryXAxis: NumericAxis(
-                     maximum: 20,
-                       minimum: 26,
-                       isVisible: false,
-                     interval: 1
-                   ),
-                   primaryYAxis:NumericAxis(
-                     minimum: 20000,
-                     maximum: 26000,
-                     interval: 1000,
-                     borderWidth: 0,
-                     borderColor: Colors.transparent,
-                     isVisible: false,
-                   ) ,
-                   series:<ChartSeries<_ChartData, double>>[
-                         AreaSeries<_ChartData,double >(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () {
+                setState(() {
+                  dahadTap = 0;
+                });
+              },
+              child: Text(
+                "داهات",
+                style: dahadTap == 0 ? BtmChartStyle : BtmChartNoStyle,
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  dahadTap = 1;
+                });
+              },
+              child: Text(
+                "خەرجی ",
+                style: dahadTap == 1 ? BtmChartStyle : BtmChartNoStyle,
+              ),
+            ),
+          ],
+        ),
+        dahadTap == 0
+            ? Container(
+                height: 200,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 0, right: 0, top: 0),
+                  child: Stack(
+                    children: [
+                      SfCartesianChart(
+                        margin: EdgeInsets.all(0),
+                        borderWidth: 0,
+                        borderColor: Colors.transparent,
+                        plotAreaBorderWidth: 0,
+                        primaryXAxis: NumericAxis(
+                            maximum: 20,
+                            minimum: 26,
+                            isVisible: false,
+                            interval: 1),
+                        primaryYAxis: NumericAxis(
+                          minimum: 20000,
+                          maximum: 26000,
+                          interval: 1000,
+                          borderWidth: 0,
+                          borderColor: Colors.transparent,
+                          isVisible: false,
+                        ),
+                        series: <ChartSeries<_ChartData, double>>[
+                          AreaSeries<_ChartData, double>(
                               dataSource: data,
                               xValueMapper: (_ChartData data, _) => data.x,
-                             yValueMapper: (_ChartData data, _) => data.y,
-                             name: 'Gold',
-                           gradient: LinearGradient(
-                             colors: [
-                               Color.fromARGB(230, 33, 8, 220),
-                               Color.fromARGB(230, 100, 95, 189),
-                             ],
-                             begin: Alignment.topCenter,
-                             end: Alignment.bottomCenter
-                           )
-                            ),
-
-                        ] ,
-                 ),
-              Positioned(
-                left: 50,
-                  right: 150,
-                  top: 160,
-                  child: Row(
-                    children: [
-                      Text('داهات',style: TextStyle(color: Colors.white,fontSize: 15),),
-                    ],
-                  ))
-               ],
-             ),
-
-          ),
-        ):
-        Container(
-          height: 200,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 0, right: 0, top: 0),
-            child: Stack(
-              children: [
-                SfCartesianChart(
-                  margin: EdgeInsets.all(0),
-                  borderWidth: 0,
-                  borderColor: Colors.transparent,
-                  plotAreaBorderWidth: 0,
-                  primaryXAxis: NumericAxis(
-                      maximum: 20,
-                      minimum: 26,
-                      isVisible: false,
-                      interval: 1
-                  ),
-                  primaryYAxis:NumericAxis(
-                    minimum: 20000,
-                    maximum: 26000,
-                    interval: 1000,
-                    borderWidth: 0,
-                    borderColor: Colors.transparent,
-                    isVisible: false,
-                  ) ,
-                  series:<ChartSeries<_ChartData, double>>[
-                    AreaSeries<_ChartData,double >(
-                        dataSource: data,
-                        xValueMapper: (_ChartData data, _) => data.x,
-                        yValueMapper: (_ChartData data, _) => data.y,
-                        name: 'Gold',
-                        gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 169, 34, 34),
-                              Color.fromARGB(230, 169, 65, 92),
+                              yValueMapper: (_ChartData data, _) => data.y,
+                              name: 'Gold',
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(230, 33, 8, 220),
+                                    Color.fromARGB(230, 100, 95, 189),
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter)),
+                        ],
+                      ),
+                      Positioned(
+                          left: 50,
+                          right: 150,
+                          top: 160,
+                          child: Row(
+                            children: [
+                              Text(
+                                'داهات',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
                             ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter
-                        )
-                    ),
-
-                  ] ,
+                          ))
+                    ],
+                  ),
                 ),
-                Positioned(
-                    left: 50,
-                    right: 150,
-                    top: 160,
-                    child: Row(
-                      children: [
-                        Text('خەرجی ',style: TextStyle(color: Colors.white,fontSize: 15),),
-                      ],
-                    ))
-              ],
-            ),
-
-          ),
-        )
+              )
+            : Container(
+                height: 200,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 0, right: 0, top: 0),
+                  child: Stack(
+                    children: [
+                      SfCartesianChart(
+                        margin: EdgeInsets.all(0),
+                        borderWidth: 0,
+                        borderColor: Colors.transparent,
+                        plotAreaBorderWidth: 0,
+                        primaryXAxis: NumericAxis(
+                            maximum: 20,
+                            minimum: 26,
+                            isVisible: false,
+                            interval: 1),
+                        primaryYAxis: NumericAxis(
+                          minimum: 20000,
+                          maximum: 26000,
+                          interval: 1000,
+                          borderWidth: 0,
+                          borderColor: Colors.transparent,
+                          isVisible: false,
+                        ),
+                        series: <ChartSeries<_ChartData, double>>[
+                          AreaSeries<_ChartData, double>(
+                              dataSource: data,
+                              xValueMapper: (_ChartData data, _) => data.x,
+                              yValueMapper: (_ChartData data, _) => data.y,
+                              name: 'Gold',
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(255, 169, 34, 34),
+                                    Color.fromARGB(230, 169, 65, 92),
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter)),
+                        ],
+                      ),
+                      Positioned(
+                          left: 50,
+                          right: 150,
+                          top: 160,
+                          child: Row(
+                            children: [
+                              Text(
+                                'خەرجی ',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                            ],
+                          ))
+                    ],
+                  ),
+                ),
+              )
       ],
     );
   }
@@ -367,8 +369,9 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const  Color.fromARGB(230, 100, 95, 189),),
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color.fromARGB(230, 100, 95, 189),
+                ),
                 height: 80,
                 width: 100,
                 child: Center(
@@ -376,7 +379,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     itemExtent: 30,
                     onSelectedItemChanged: (valuecash) {
                       setState(() {
-                        Valuecash=valuecash;
+                        Valuecash = valuecash;
                       });
                     },
                     children: [
@@ -390,15 +393,25 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: TextStyle(fontSize: 15, color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
-
                     ],
                   ),
                 )),
-            Container(child: Icon(Icons.arrow_right,size: 40,),),
             Container(
-              child:Valuecash==0
-                  ? Text("10000000 USD",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
-                  :Text("20000000 IQD",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
+              child: Icon(
+                Icons.arrow_right,
+                size: 40,
+              ),
+            ),
+            Container(
+              child: Valuecash == 0
+                  ? Text(
+                      "10000000 USD",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    )
+                  : Text("20000000 IQD",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             )
           ],
         ),
@@ -408,7 +421,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget MnueCard(BuildContext context) {
     return SingleChildScrollView(
-     scrollDirection: Axis.horizontal,
+      scrollDirection: Axis.horizontal,
       child: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Column(
@@ -416,11 +429,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               children: [
                 InkWell(
-
-                    onTap: ()=>    Navigator.of(context).pushNamed(
-                 '/PayAndRec',
-
-                 ),
+                  onTap: () => Navigator.of(context).pushNamed(
+                    '/PayAndRec',
+                  ),
                   child: Container(
                     width: widthandheightCardIcons,
                     height: hidthandheightCardIcons,
@@ -473,81 +484,78 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ),
-
               ],
             ),
-         Row(
-           children: [
-             InkWell(
-               onTap: ()=>Navigator.of(context).pushNamed(
-                 '/Settings',),
-               child: Container(
-                 width: widthandheightCardIcons,
-                 height: hidthandheightCardIcons,
-                 child: Card(
-                   shape: RoundedRectangleBorder(
-                     borderRadius: BorderRadiusCard,
-                   ),
-                   color: ColorCard,
-                   child: Column(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                     children: [
-                       Icon(
-                         UniconsLine.setting,
-                         size: SizeCardIcons,
-                         color: ColorCardIcons,
-                       ),
-                       Text(
-                         " ڕێکخستن",
-                         style: TextStyle(
-                           fontSize: 16,
-                         ),
-                       )
-                     ],
-                   ),
-                 ),
-               ),
-             ),
-             Container(
-               width: widthandheightCardIcons,
-               height: hidthandheightCardIcons,
-               child: Card(
-                 shape: RoundedRectangleBorder(
-                   borderRadius: BorderRadiusCard,
-                 ),
-                 color: ColorCard,
-                 child: Column(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: [
-                     Icon(
-                       UniconsLine.money_insert,
-                       size: SizeCardIcons,
-                       color: ColorCardIcons,
-                     ),
-                     Text(
-                       " خەرجی",
-                       style: TextStyle(
-                         fontSize: 16,
-                       ),
-                     )
-                   ],
-                 ),
-               ),
-             ),
-           ],
-         )
+            Row(
+              children: [
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed(
+                    '/Settings',
+                  ),
+                  child: Container(
+                    width: widthandheightCardIcons,
+                    height: hidthandheightCardIcons,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadiusCard,
+                      ),
+                      color: ColorCard,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            UniconsLine.setting,
+                            size: SizeCardIcons,
+                            color: ColorCardIcons,
+                          ),
+                          Text(
+                            " ڕێکخستن",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: widthandheightCardIcons,
+                  height: hidthandheightCardIcons,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadiusCard,
+                    ),
+                    color: ColorCard,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          UniconsLine.money_insert,
+                          size: SizeCardIcons,
+                          color: ColorCardIcons,
+                        ),
+                        Text(
+                          " خەرجی",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
     );
   }
-
-
 }
+
 class _ChartData {
-  _ChartData([this.x,this.y]);
+  _ChartData([this.x, this.y]);
   double? x;
-   double ? y;
+  double? y;
 }
-
-
